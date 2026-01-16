@@ -54,9 +54,9 @@ struct MediaItem {
 
   /** @name File Stats */
   ///@{
-  off_t size = 0;   ///< File size in bytes.
-  time_t mtime = 0; ///< Last modification time (for cache invalidation).
-  ino_t inode = 0;  ///< File system inode number (stable identifier).
+  int64 size = 0;   ///< File size in bytes.
+  int64 mtime = 0; ///< Last modification time (for cache invalidation).
+  int64 inode = 0;  ///< File system inode number (stable identifier).
   bool missing =
       false; ///< Flag indicating if file was not found during last scan.
   ///@}

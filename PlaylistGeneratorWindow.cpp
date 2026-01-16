@@ -161,7 +161,7 @@ void PlaylistGeneratorWindow::_BuildUI(const std::vector<BString> &genres) {
     fInputCardLayout->AddView(yearGroup);
   }
 
-  fInputCardLayout->SetVisibleItem(0);
+  fInputCardLayout->SetVisibleItem((int32)0);
 
   fRuleList = new BListView("Rules", B_SINGLE_SELECTION_LIST);
 

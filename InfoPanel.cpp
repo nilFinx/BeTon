@@ -70,7 +70,7 @@ InfoPanel::InfoPanel() : BView("InfoPanel", B_WILL_DRAW) {
   cardHost->SetLayout(fCards);
   fCards->AddView(fInfoBox);
   fCards->AddView(fCoverPane);
-  fCards->SetVisibleItem(0); // Default to info text
+  fCards->SetVisibleItem((int32)0);
 
   BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
       .SetInsets(0, 0, 0, 0)
