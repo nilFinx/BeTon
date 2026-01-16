@@ -6,7 +6,7 @@
 #---------------------------------------------------------------------------
 PROJECT_NAME           = "BeTon"
 PROJECT_BRIEF          = "A native music player for Haiku OS"
-PROJECT_NUMBER         = 0.1
+PROJECT_NUMBER         = 1.0
 OUTPUT_DIRECTORY       = docs
 CREATE_SUBDIRS         = NO
 
