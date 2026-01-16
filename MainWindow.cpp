@@ -86,7 +86,7 @@ static BBitmap *LoadIconFromResource(int32 id, float size) {
   const void *data =
       be_app->AppResources()->LoadResource(B_VECTOR_ICON_TYPE, id, &len);
   if (!data || len == 0) {
-    fprintf(stderr, "[MainWindow] Icon-ID %ld nicht gefunden\n", (long)id);
+    fprintf(stderr, "[MainWindow] Icon-ID %ld not found\n", (long)id);
     return nullptr;
   }
 
@@ -95,7 +95,7 @@ static BBitmap *LoadIconFromResource(int32 id, float size) {
   if (BIconUtils::GetVectorIcon(static_cast<const uint8 *>(data), len, bmp) !=
       B_OK) {
     delete bmp;
-    fprintf(stderr, "[MainWindow] Icon-ID %ld: Dekodierung fehlgeschlagen\n",
+    fprintf(stderr, "[MainWindow] Icon-ID %ld: decoding failed\n",
             (long)id);
     return nullptr;
   }
@@ -168,8 +168,8 @@ MainWindow::MainWindow()
   font_height fh;
   be_plain_font->GetHeight(&fh);
   float fontHeight = fh.ascent + fh.descent + fh.leading;
-  float windowWidth = fontHeight * 70;       // ~1008px at default font
-  float windowHeight = windowWidth / 1.618f; // Golden ratio
+  float windowWidth = fontHeight * 70;
+  float windowHeight = windowWidth / 1.618f;
   ResizeTo(windowWidth, windowHeight);
   CenterOnScreen();
   fPlaylistManager->LoadAvailablePlaylists();
@@ -1577,8 +1577,8 @@ void MainWindow::MessageReceived(BMessage *msg) {
       break;
 
     if (!fPlaylistManager->IsPlaylistWritable(playlist)) {
-      DEBUG_PRINT("[MainWindow] addp abgelehnt: Playlist '%s' ist nicht "
-                  "beschreibbar\\n",
+      DEBUG_PRINT("[MainWindow] addp rejected: Playlist '%s' is not "
+                  "writeable\\n",
                   playlist.String());
       break;
     }
@@ -1669,8 +1669,8 @@ void MainWindow::MessageReceived(BMessage *msg) {
 
     if (files.empty()) {
       DEBUG_PRINT(
-          "[Properties] Keine Pfade in MSG_PROPERTIES (file/refs + Auswahl "
-          "leer)\\n");
+          "[Properties] No Paths in MSG_PROPERTIES (file/refs + Selection "
+          "empty)\\n");
       break;
     }
 
@@ -1712,7 +1712,7 @@ void MainWindow::MessageReceived(BMessage *msg) {
     BMessage filesMsg;
     if (msg->FindMessage("files", &filesMsg) == B_OK) {
       fPendingPlaylistFiles = filesMsg;
-      DEBUG_PRINT("[MainWindow] %d Dateien für neue Playlist gepuffert\\n",
+      DEBUG_PRINT("[MainWindow] %d Files for new Playlist buffered\\n",
                   filesMsg.CountNames(B_REF_TYPE));
     }
 
@@ -1832,7 +1832,7 @@ void MainWindow::MessageReceived(BMessage *msg) {
 
         BEntry entry(oldPath.Path());
         if (entry.Exists() && entry.Rename(newPath.Path()) == B_OK) {
-          DEBUG_PRINT("[MainWindow] Playlist '%s' → '%s' umbenannt\\n",
+          DEBUG_PRINT("[MainWindow] Playlist '%s' → '%s' renamed\\n",
                       oldName.String(), newName.String());
 
           fPlaylistManager->RenamePlaylist(oldName, newName);
@@ -2585,7 +2585,7 @@ void MainWindow::MessageReceived(BMessage *msg) {
         fPlaylistManager->LoadAvailablePlaylists();
         SaveSettings();
         BString statusMsg;
-        statusMsg.SetToFormat(B_TRANSLATE("Playlist-Ordner gesetzt: %s"),
+        statusMsg.SetToFormat(B_TRANSLATE("Playlist-Folder set to: %s"),
                               fPlaylistPath.String());
         UpdateStatus(statusMsg);
       }
@@ -2728,7 +2728,7 @@ void MainWindow::MessageReceived(BMessage *msg) {
     fPlaylistManager->SavePlaylist(name, paths);
 
     BString statusMsg;
-    statusMsg.SetToFormat(B_TRANSLATE("Playlist '%s' erstellt"), name.String());
+    statusMsg.SetToFormat(B_TRANSLATE("Playlist '%s' created"), name.String());
     if (shuffle)
       statusMsg << " " << B_TRANSLATE("(Gemischt)");
     if (limitMode > 0)
@@ -3186,3 +3186,4 @@ void MainWindow::ApplyColors() {
     fPlaylistManager->View()->SetSelectionColor(selColor);
   }
 }
+
