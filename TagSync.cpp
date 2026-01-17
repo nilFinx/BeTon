@@ -30,7 +30,7 @@
 #include <taglib/unsynchronizedlyricsframe.h>
 
 /**
- * @brief Converts a TagLib::String to a BString. 
+ * @brief Converts a TagLib::String to a BString.
  */
 static inline BString TL(const TagLib::String &s) {
   return BString(s.to8Bit(true).c_str());
@@ -248,10 +248,11 @@ bool TagSync::ReadTags(const BPath &path, TagData &out) {
             val = "";
           }
 
-          DEBUG_PRINT("[TagSync] TXXX Found: desc='%s' (Freq=%u)\\n",
-                      TL(u->description()).String(), (uint32)fl.size());
+          DEBUG_PRINT("[TagSync] TXXX Found: desc='%s' (Freq=%lu)\\n",
+                      TL(u->description()).String(), (unsigned long)fl.size());
           for (uint32 k = 0; k < fl.size(); k++) {
-            DEBUG_PRINT("   -> Field[%u]: '%s'\\n", k, TL(fl[k]).String());
+            DEBUG_PRINT("   -> Field[%lu]: '%s'\\n", (unsigned long)k,
+                        TL(fl[k]).String());
           }
 
           if (desc.ICompare("MusicBrainz Album Id") == 0)
@@ -473,8 +474,8 @@ bool TagSync::WriteTagsToFile(const BPath &path, const TagData &td,
         id3->removeFrame(f, true);
       }
 
-      DEBUG_PRINT("[TagSync] setTXXX: '%s' -> '%s' (Removed %u old frames)\\n",
-                  desc, val.String(), (uint32)toRemove.size());
+      DEBUG_PRINT("[TagSync] setTXXX: '%s' -> '%s' (Removed %lu old frames)\\n",
+                  desc, val.String(), (unsigned long)toRemove.size());
 
       if (!val.IsEmpty()) {
         auto *frame = new TagLib::ID3v2::UserTextIdentificationFrame(
@@ -485,9 +486,9 @@ bool TagSync::WriteTagsToFile(const BPath &path, const TagData &td,
                                       ? TagLib::String()
                                       : frame->fieldList().front();
         DEBUG_PRINT("[TagSync] setTXXX: Set '%s', Immediate Check: '%s' "
-                    "(ListSize %u)\\n",
+                    "(ListSize %lu)\\n",
                     val.String(), checkVal.toCString(true),
-                    (uint32)frame->fieldList().size());
+                    (unsigned long)frame->fieldList().size());
       }
     };
 
@@ -650,13 +651,18 @@ bool TagSync::WriteTagsToFile(const BPath &path, const TagData &td,
       _setOrErase(pm, "COMPOSER", td.composer);
 
       BString tt =
-          td.trackTotal ? BString().SetToFormat("%u", td.trackTotal) : "";
+          td.trackTotal
+              ? BString().SetToFormat("%lu", (unsigned long)td.trackTotal)
+              : "";
       _setOrErase(pm, "TRACKTOTAL", tt);
       _setOrErase(pm, "TOTALTRACKS", tt);
 
-      BString d = td.disc ? BString().SetToFormat("%u", td.disc) : "";
+      BString d =
+          td.disc ? BString().SetToFormat("%lu", (unsigned long)td.disc) : "";
       BString dt =
-          td.discTotal ? BString().SetToFormat("%u", td.discTotal) : "";
+          td.discTotal
+              ? BString().SetToFormat("%lu", (unsigned long)td.discTotal)
+              : "";
       _setOrErase(pm, "DISCTOTAL", dt);
       _setOrErase(pm, "TOTALDISCS", dt);
 
