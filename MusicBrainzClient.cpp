@@ -467,7 +467,11 @@ int MusicBrainzClient::_FetchUrl(const BString &urlStr,
     fLastCall = system_time();
 
     BMallocIO sink;
-    BUrl url(urlStr.String(), true);
+#if B_HAIKU_VERSION <= B_HAIKU_VERSION_1_BETA_5
+    BUrl url(urlStr.String());
+#else
+    BUrl burl(url, true);
+#endif
     std::unique_ptr<BUrlRequest> req(
         BUrlProtocolRoster::MakeRequest(url, &sink));
     if (!req) {
