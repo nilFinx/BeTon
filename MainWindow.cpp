@@ -1312,11 +1312,17 @@ void MainWindow::MessageReceived(BMessage *msg) {
     if (msg->FindInt32("index", &index) == B_OK &&
         msg->FindString("path", &path) == B_OK) {
 
-      BString artist, title;
+      BString artist, title, album, genre;
+      int32 year = 0;
+      int32 bitrate = 0;
       for (const auto &media : fAllItems) {
         if (media.path == path) {
           artist = media.artist;
           title = media.title;
+          album = media.album;
+          genre = media.genre;
+          year = media.year;
+          bitrate = media.bitrate;
           break;
         }
       }
@@ -1333,6 +1339,22 @@ void MainWindow::MessageReceived(BMessage *msg) {
       // Update now-playing indicator in content view
       if (fLibraryManager && fLibraryManager->ContentView()) {
         fLibraryManager->ContentView()->SetNowPlayingPath(path);
+      }
+
+      // Update InfoPanel with current track info after the latest change ;)
+      if (fInfoPanel) {
+        BString info;
+        info << B_TRANSLATE("Artist: ") << (artist.IsEmpty() ? "-" : artist)
+             << "\n";
+        info << B_TRANSLATE("Album: ") << (album.IsEmpty() ? "-" : album)
+             << "\n";
+        info << B_TRANSLATE("Title: ") << (title.IsEmpty() ? "-" : title)
+             << "\n";
+        info << B_TRANSLATE("Year: ") << year << "\n";
+        info << B_TRANSLATE("Genre: ") << (genre.IsEmpty() ? "-" : genre)
+             << "\n\n";
+        info << B_TRANSLATE("Bitrate: ") << bitrate << " kbps\n";
+        fInfoPanel->SetFileInfo(info);
       }
     }
     break;
