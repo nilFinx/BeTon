@@ -66,8 +66,7 @@ PropertiesWindow::PropertiesWindow(const BPath &filePath,
  */
 PropertiesWindow::PropertiesWindow(BRect frame, const BPath &filePath,
                                    const BMessenger &target)
-    : BWindow(frame, B_TRANSLATE("Properties"), B_TITLED_WINDOW,
-              B_AUTO_UPDATE_SIZE_LIMITS),
+    : BWindow(frame, B_TRANSLATE("Properties"), B_TITLED_WINDOW, 0),
       fFilePath(filePath), fTarget(target) {
   fIsMulti = false;
   _BuildUI();
@@ -82,7 +81,7 @@ PropertiesWindow::PropertiesWindow(BRect frame, const BPath &filePath,
  */
 PropertiesWindow::PropertiesWindow(const std::vector<BPath> &filePaths,
                                    const BMessenger &target)
-    : PropertiesWindow(BRect(100, 100, 940, 680), filePaths, target) {}
+    : PropertiesWindow(BRect(100, 100, 620, 800), filePaths, target) {}
 
 /**
  * @brief Main constructor implementation for multi-file mode.
@@ -93,8 +92,7 @@ PropertiesWindow::PropertiesWindow(const std::vector<BPath> &filePaths,
 PropertiesWindow::PropertiesWindow(BRect frame,
                                    const std::vector<BPath> &filePaths,
                                    const BMessenger &target)
-    : BWindow(frame, B_TRANSLATE("Properties"), B_TITLED_WINDOW,
-              B_AUTO_UPDATE_SIZE_LIMITS),
+    : BWindow(frame, B_TRANSLATE("Properties"), B_TITLED_WINDOW, 0),
       fTarget(target) {
   fIsMulti = true;
   fFiles = filePaths;
@@ -119,8 +117,8 @@ PropertiesWindow::PropertiesWindow(BRect frame,
  */
 PropertiesWindow::PropertiesWindow(const std::vector<BPath> &filePaths,
                                    int32 initialIndex, const BMessenger &target)
-    : BWindow(BRect(100, 100, 940, 680), B_TRANSLATE("Properties"),
-              B_TITLED_WINDOW, B_AUTO_UPDATE_SIZE_LIMITS),
+    : BWindow(BRect(100, 100, 620, 800), B_TRANSLATE("Properties"),
+              B_TITLED_WINDOW, 0),
       fTarget(target) {
 
   fFiles = filePaths;
@@ -466,20 +464,10 @@ void PropertiesWindow::_BuildTab_Cover(BView *parent) {
   row2gl->AddItem(BSpaceLayoutItem::CreateGlue());
   gl->AddView(row2);
 
-  /*
-  gl->AddItem(BSpaceLayoutItem::CreateVerticalStrut(B_USE_DEFAULT_SPACING));
-  gl->AddView(new BStringView(nullptr, B_TRANSLATE("Load Online")));
-
-  auto *row3 = new BView(nullptr, B_WILL_DRAW);
-  row3->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
-  auto *row3gl = new BGroupLayout(B_HORIZONTAL);
-  row3->SetLayout(row3gl);
-  row3gl->AddView(fBtnCoverFromMB);
-  row3gl->AddItem(BSpaceLayoutItem::CreateGlue());
-  gl->AddView(row3);
-  */
-
   (void)fBtnCoverFromMB;
+
+  // Push widgets to top
+  gl->AddItem(BSpaceLayoutItem::CreateGlue());
 
   if (auto *pg = dynamic_cast<BGroupLayout *>(parent->GetLayout()))
     pg->AddView(root);

@@ -140,7 +140,7 @@ static void CollectPathsFromMessage(const BMessage *msg,
  * controller. Starts the initial cache load and status updates.
  */
 MainWindow::MainWindow()
-    : BWindow(BRect(100, 100, 400, 300), "BeTon", B_TITLED_WINDOW,
+    : BWindow(BRect(100, 100, 400, 300), "BeTon", B_DOCUMENT_WINDOW,
               B_QUIT_ON_WINDOW_CLOSE),
       fNewFilesCount(0), fSongDuration(0), fPropertiesWindow(nullptr),
       fController(nullptr), fUpdateRunner(nullptr) {
@@ -380,6 +380,7 @@ void MainWindow::_BuildUI() {
   BScrollView *contentScroll =
       new BScrollView("content_scroll", fLibraryManager->ContentView(),
                       B_WILL_DRAW, false, false);
+  contentScroll->SetBorder(B_NO_BORDER);
 
   BGroupView *sidebarGroup = new BGroupView(B_VERTICAL, 0);
   sidebarGroup->SetExplicitMinSize(BSize(fontHeight * 14, B_SIZE_UNSET));
@@ -426,6 +427,7 @@ void MainWindow::_BuildUI() {
       .Add(albumScroll, 1.0f)
       .End()
 
+      // .Add(contentScroll, 2.0f)
       .Add(contentScroll, 2.0f)
       .End()
       .End()
